@@ -26,7 +26,7 @@ scenic_trees = defaultdict(list)    # Part 2
 all_lines: list = ["x" + line.strip() + "x" 
     for line in open("inputs/day8.txt")]
 line_length: int = len(all_lines[0])
-treeline: int = "".join(["x" * line_length] + all_lines + ["x" * line_length])
+treeline: str = "".join(["x" * line_length] + all_lines + ["x" * line_length])
 
 def visible_in_direction(
     i: int, 
@@ -79,7 +79,7 @@ def main():
     # scores, one for each direction) and flattens it to just the product
     # of those scores, then returns the highest value.
     scenic_score = max(map(lambda t: prod(t[1]), scenic_trees.items()))
-    
+
     print("Part one: ", visible)
     print("Part two: ", scenic_score)
 
