@@ -65,8 +65,8 @@ def visible_in_direction(
 def main():
     global visible
 
-    for i in range(len(treeline)):
-        if treeline[i].isdigit():
+    for i, tree in enumerate(treeline):
+        if tree.isdigit():
             top = visible_in_direction(i, i, -line_length, treeline)
             left = visible_in_direction(i, i, -1, treeline)
             right = visible_in_direction(i, i, 1, treeline)
