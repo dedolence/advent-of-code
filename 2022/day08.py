@@ -1,19 +1,27 @@
 """
-    1: pad the input with "x"s to help check for edges.
-    2: flatten the 2-d input to a 1-d string.
-    3: For each tree, recursively check the next tree in line by adding
-        or subtracting an offset (+/- 1 for the X dimension, or +/- length
-        of the line to check other rows.)
-
-    Test input reference: 
-
-    x x x x x x x     0  - 6
-    x 3 0 3 7 3 x     7  - 13
-    x 2 5 5 1 2 x     14 - 20
-    x 6 5 3 3 2 x     21 - 27
-    x 3 3 5 4 9 x     28 - 34
-    x 3 5 3 9 0 x     35 - 41
-    x x x x x x x     42 - 48
+    - The input is padded with "x"s all around to help check for the 
+    edges, i.e.:
+        x x x x x x x
+        x 3 0 3 7 3 x
+        x 2 5 5 1 2 x
+        x 6 5 3 3 2 x
+        x 3 3 5 4 9 x
+        x 3 5 3 9 0 x
+        x x x x x x x
+    - The grid is flattened to a single one-line string, i.e.:
+        "xxxxxxx30373xx25512xx65..."
+    - For each character of the input string, if it is a digit, check if it is
+    visible in each of the four directions.
+    - Visibility is checked recursively by adding an offset to the tree's index.
+    Checking vertically is done by setting the offset to the length of a row.
+    - If an edge is reached (an "x"), a ValueError will be thrown, indicating
+    that the tree is visible all the way to an edge.
+    - Otherwise, the heights are compared; if shorter, the function is called
+    again with the next neighbor; if taller, the function returns false (the 
+    tree is not visible in that direction).
+    - Meanwhile, each time a shorter tree is encountered, that tree's scenic
+    score is incremented, as stored in a dict, with the key as the tree's index,
+    and the value being a list of 4 integers, one score for each direction.
 """
 
 from collections import defaultdict
@@ -33,21 +41,7 @@ def visible_in_direction(
     x: int, 
     offset: int,
     c: int = 0) -> bool:
-    """
-        Recursively checks neighboring trees by getting their value using 
-        an index of the treeline string. Offset controls the "direction" to 
-        find neighbors in, equaling the length of a row for searching in the
-        vertical directions.
 
-        Attempts to cast the neighbor to an int, which will fail if an edge is
-        reached (edges are "x"s).
-
-        Compares the tree heights, returning False and adds one to the tree's
-        scenic score if the neighbor is as tall or taller.
-
-        If the neighbor is shorter, adds one to its scenic score and calls
-        itself to check the next neighbor in line.
-    """
     try:
         if int(treeline[x + offset]) >= int(treeline[i]):
             scenic_trees[i].append(c+1)
@@ -74,9 +68,6 @@ def main():
             if right or left or top or bottom: 
                 visible += 1
 
-    # takes the dict of keys (tree indices) and values (list of 4 scenic
-    # scores, one for each direction) and flattens it to just the product
-    # of those scores, then returns the highest value.
     scenic_score = max(map(lambda t: prod(t[1]), scenic_trees.items()))
 
     print("Part one: ", visible)
