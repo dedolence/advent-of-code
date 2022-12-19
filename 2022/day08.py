@@ -31,8 +31,7 @@ treeline: str = "".join(["x" * line_length] + all_lines + ["x" * line_length])
 def visible_in_direction(
     i: int, 
     x: int, 
-    offset: int, 
-    arr: list, 
+    offset: int,
     c: int = 0) -> bool:
     """
         Recursively checks neighboring trees by getting their value using 
@@ -50,12 +49,12 @@ def visible_in_direction(
         itself to check the next neighbor in line.
     """
     try:
-        if int(arr[x + offset]) >= int(arr[i]):
+        if int(treeline[x + offset]) >= int(treeline[i]):
             scenic_trees[i].append(c+1)
             return False
         
         else:
-            return visible_in_direction(i, x + offset, offset, arr, c + 1)
+            return visible_in_direction(i, x + offset, offset, c + 1)
     
     except ValueError:
         scenic_trees[i].append(c)
@@ -67,10 +66,10 @@ def main():
 
     for i, tree in enumerate(treeline):
         if tree.isdigit():
-            top = visible_in_direction(i, i, -line_length, treeline)
-            left = visible_in_direction(i, i, -1, treeline)
-            right = visible_in_direction(i, i, 1, treeline)
-            bottom = visible_in_direction(i, i, line_length, treeline)
+            top = visible_in_direction(i, i, -line_length)
+            left = visible_in_direction(i, i, -1)
+            right = visible_in_direction(i, i, 1)
+            bottom = visible_in_direction(i, i, line_length)
 
             if right or left or top or bottom: 
                 visible += 1
