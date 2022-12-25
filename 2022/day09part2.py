@@ -95,11 +95,11 @@ class Grid():
         self.height = 16
         self.origin_x = self.width // 2
         self.origin_y = self.height // 2
-        self.delta: int = 1
         self.rope: Rope = rope
         self.head: Knot = rope.head
         self.tail: Knot = rope.tail
-        self.inst = None
+
+        # instantiate a blank grid
         self.reset()
 
 
@@ -122,7 +122,7 @@ class Grid():
 
     def reset(self) -> None:
         """
-            Resets the grid to blank dots to refres before updating.
+            Resets the grid to blank dots.
         """
         self.points: list = []
         for i in range(self.height):
