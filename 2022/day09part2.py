@@ -162,7 +162,7 @@ class Grid():
 def process_instructions(input) -> List[Instr]:
     """
         Parses instructions as single-unit movements on an X,Y plane.
-        E.g.: "R 3" becomes, "[(1,0), (1,0), (1,0)].
+        E.g.: "R 3" becomes, "[(1,0), (1,0), (1,0)]".
     """
     parsed_ins = []
     for line in input:
