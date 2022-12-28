@@ -19,7 +19,6 @@ class Console():
         # p is an ON pixel +/- 1.
         # if screen is currently drawing a pixel that matches P +/- 1, then
         # that pixel is drawn ON.
-        # draw either a . or # at pixedl[y][x] depending on value of X
         if self.x in [p - 1, p, p + 1]:
             self.set_char(self.x, self.y, '#')
 
@@ -50,6 +49,7 @@ def main() -> None:
         cycle = i + 1                           # cycle is 1-indexed
         signal_strengths[cycle] = cycle * x     # this should come BEFORE execution
 
+        # draw X at its current value
         console.draw(x)
         
         if instr.split()[0] == "addx":
@@ -58,6 +58,10 @@ def main() -> None:
                 execute = False
                 
             else:
+                # code works by duplicating the addx instruction to
+                # account for it taking two cycles; it only executes
+                # the instruction on the second iteration, when
+                # execute = true.
                 insts.insert(cycle, instr)
                 execute = True
     
