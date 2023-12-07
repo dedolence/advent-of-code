@@ -64,12 +64,12 @@ def part_two():
 
 
 if __name__ == "__main__":
-    print("Part two: ", part_two())
+    #print("Part two: ", part_two())
     
-    """
+    
         # for getting average time to execute:
         # averages about 3 seconds on one iteration
         
         result = timeit(part_two, number=1)
         print(f"Elapsed time", result)
-    """
+   
