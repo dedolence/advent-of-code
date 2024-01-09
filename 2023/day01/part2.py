@@ -1,3 +1,10 @@
+"""
+    I really am not super proud of this answer. It works, but at the cost of several nested for loops
+    (one for iterating over every line, then iterating over each character, then iterating over values).
+
+    One approach I didn't try is looking for the first value, then reversing the string and doing it again.
+"""
+
 filename = "input.txt"
 values = {"one": "1", "two": "2", "three": "3", "four": "4", "five": "5", "six": "6", "seven": "7", "eight": "8", "nine": "9"}
 
