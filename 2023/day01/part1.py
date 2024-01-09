@@ -7,17 +7,17 @@ import re
     a1b2c3d4e5f     [2, 5]
     treb7uchet      [7, 7]
 """
-FILENAME = "input.txt"
-ANSWER = 0
+filename = "input.txt"
+answer = 0
 
 input = []
-with open(FILENAME) as file:
+with open(filename) as file:
     input = [line.strip() for line in file.readlines()]
 
 for line in input:
     line = re.sub('\D', '', line)       # remove non-digits from string
     nums = int(line[0] + line[-1])      # retain only first and last digit, convert to integer
-    ANSWER += nums                      # add to running total
+    answer += nums                      # add to running total
 
 
-print(ANSWER)
+print(answer)

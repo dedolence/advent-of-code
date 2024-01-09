@@ -16,9 +16,8 @@ with open(filename) as file:
 
 
 for line in input:
-    l = len(line)
     digits = []
-    
+
     for i,c in enumerate(line):
         if line[i].isdigit():
             digits.append(line[i])
