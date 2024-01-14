@@ -12,9 +12,9 @@ limits = {"r": 12, "g": 13, "b": 14}
 
 def validate_set(s):
     """
-        It takes a set, like ["3 g", "4 r"] and breaks each results into an
-        integer and letter. It then checks that all integers are less than or
-        equal to its corresponding letter in the limits dict.
+        Splits each set: ["3 g", "4 r"] -> [["3", "g"], ["4", "r"]]
+        Then checks the integer against its corresponding letter in the
+        limits dict.
     """
     sp = [i.split(" ") for i in s]
     return all([int(j[0]) <= limits[j[1]] for j in sp])
