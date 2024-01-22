@@ -1,6 +1,7 @@
 """
     So ugly! 
 """
+# setup
 import re
 filename = "input.txt"
 input = []
@@ -10,6 +11,11 @@ with open(filename) as file:
 total = 0
 limits = {"r": 12, "g": 13, "b": 14}
 
+
+
+
+
+#logic
 def validate_set(s):
     """
         Splits each set: ["3 g", "4 r"] -> [["3", "g"], ["4", "r"]]
