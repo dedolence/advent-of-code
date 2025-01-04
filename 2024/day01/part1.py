@@ -1,20 +1,3 @@
-input = """
-3   4
-4   3
-2   5
-1   3
-3   9
-3   3
-""".strip()
-"""
-1   1000
-10  2
-
-1 + 990 = 991
-
-999 + (-8) = 991
-"""
-
 """
     Parse two columns into two lists.
     Order both lists ascending.
