@@ -1,14 +1,16 @@
-with open("input.txt") as file:
-    # go through list once, divying up numbers into inputs and frequencies
+with open("input.txt") as input:
     inputs = []
     frequencies = []
-    for line in file.readlines():
-        inputs.append(int(line[0]))
-        frequencies.append(int(line[-2]))
+    for line in input.readlines():
+        line = line.strip()
+        a, b = line.split("   ")
+        inputs.append(int(a))
+        frequencies.append(int(b))
 
-    values = []
-    for i in inputs:
-        c = frequencies.count(i)
-        values.append(i * c)
+    similarities = []
 
-    print(sum(values))
+    for num in inputs:
+        c = frequencies.count(num)
+        similarities.append(num * c)
+
+    print(sum(similarities))
