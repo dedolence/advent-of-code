@@ -16,6 +16,9 @@ def vertical(input):
         s = ""
     return "".join(vert)
 
+def diagonal(input):
+    
+
 
 def count_xmases(input: str):
     return input.count("XMAS") + input.count("SAMX")
