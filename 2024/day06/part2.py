@@ -36,49 +36,38 @@ def get_grid(file_name: str) -> list:
         grid = [pad_row] + grid + [pad_row]
         return grid
 
-loop_counter = 0
-grid = get_grid("test.txt")
-starting_pos = find_starting_position(grid)
-obstacle_pos = []
-directions = ((0, -1), (1, 0), (0, 1), (-1, 0))
-direction = 0
-visited = []
 
-def loop(grid: list, x: int, y: int, directions: tuple, current_dir: int = 0) -> list:
-    # grid = whole field grid
-    # x, y = current guard position
-    # directions = tuple containing the possible directions the guard can walk
-    # current_dir = index of the tuple indicating guard's current trajectory
-    #print(i)
-    dx, dy = directions[current_dir][0], directions[current_dir][1]
-    next_tile = grid[y + dy][x + dx]
-    visited.append((x, y))
+def get_path(grid):
+    obstacle_pos = []
+    directions = ((0, -1), (1, 0), (0, 1), (-1, 0))
+    direction = 0
+    visited = []
+    x, y = starting_pos
+    next_tile = grid[y + directions[direction][1]][x + directions[direction][0]]
 
-    if next_tile == "*":
-        return
-    
-    if next_tile == "#":
-        # alter direction but don't alter current tile
-        # this equation makes it so the index loops back to 0 when it reaches the last tuple
-        current_dir = (current_dir + 1) % len(directions)
-    else:
-        # alter current tile but don't change direction
+    while next_tile != "*":
+        # check for loops
+        set_visited = set(visited)
+        if (x, y) in set_visited:
+            return True
+        
+        visited.append((x, y))
+
+        dx, dy = directions[direction][0], directions[direction][1]
+        next_tile = grid[y + dy][x + dx]
+        
+        if next_tile == "#":
+            # update the guard's trajectory
+            direction = (direction + 1) % len(directions)
+            dx, dy = directions[direction][0], directions[direction][1]
+
         x += dx
         y += dy
     
-    #draw(x, y)
-    return loop(grid, x, y, directions, current_dir)
+    return visited
 
-guard_path = loop(grid, starting_pos[0], starting_pos[1], directions, direction)
-print(len(visited))
 
-def obstacle(grid: list, original_path: list, loops: list, current_index: int = 0):
-    if current_index == len(original_path):
-        # reached the end of the path and checked every possible obstacle
-        return loops
-    
-    current_tile: tuple = original_path[current_index]
-    next_tile: tuple = original_path[current_index + 1]
-    x, y = current_tile
-
-    
+loop_counter = 0
+grid = get_grid("test.txt")
+starting_pos = find_starting_position(grid)
+visited = get_path(grid)
