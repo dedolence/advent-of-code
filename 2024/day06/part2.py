@@ -26,7 +26,7 @@ def find_starting_position(grid: list) -> tuple:
     for y, row in enumerate(grid):
         for x, col in enumerate(row):
             if col == "^":
-                return (x, y)
+                return (x, y, 0)
 
         
 def get_grid(file_name: str) -> list:
@@ -38,20 +38,18 @@ def get_grid(file_name: str) -> list:
 
 
 def get_path(grid):
-    obstacle_pos = []
     directions = ((0, -1), (1, 0), (0, 1), (-1, 0))
-    direction = 0
     visited = []
-    x, y = starting_pos
+    x, y, direction = starting_pos
     next_tile = grid[y + directions[direction][1]][x + directions[direction][0]]
 
     while next_tile != "*":
         # check for loops
         set_visited = set(visited)
-        if (x, y) in set_visited:
+        if (x, y, direction) in set_visited:
             return True
         
-        visited.append((x, y))
+        visited.append((x, y, direction))
 
         dx, dy = directions[direction][0], directions[direction][1]
         next_tile = grid[y + dy][x + dx]
@@ -71,3 +69,5 @@ loop_counter = 0
 grid = get_grid("test.txt")
 starting_pos = find_starting_position(grid)
 visited = get_path(grid)
+
+print(len(set(visited)))
