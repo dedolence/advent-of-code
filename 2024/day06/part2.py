@@ -77,6 +77,7 @@ class Guard:
         return self.current_pos
     
     def change_direction(self):
+        # this just cycles through a list 0 -> 1 -> 2 -> 3 -> 0 -> 1...
         new_direction = (self.current_pos.d + 1) % len(self.directions)
         self.current_pos = Pos(self.current_pos.x, self.current_pos.y, new_direction)
 
@@ -119,6 +120,7 @@ class Guard:
             return starting_pos
 
         def draw(self, guard, dt = .15):
+            # for testing to see what was happening on-screen
             os.system("cls")
             gx = guard.current_pos.x
             gy = guard.current_pos.y
@@ -138,7 +140,7 @@ class Guard:
             sleep(dt)
 
 
-def find_loops(test: Guard, control: Guard, loops: int = 0, loop_pos: list = []):
+def find_loops(test: Guard, control: Guard, patrol: int = 0, loop_pos: list = []):
     # control starts off one step ahead of test. if it's out of bounds then we're done
     if control.out_of_bounds:
         return loop_pos
@@ -150,6 +152,9 @@ def find_loops(test: Guard, control: Guard, loops: int = 0, loop_pos: list = [])
     def inner(guard: Guard):
         if guard.draw: guard.grid.draw(guard)
         if guard.in_a_loop:
+            # only append the x, y coordinates of an obstacle if it creates a loop.
+            # this is to avoid duplicate obstacles where the obstacle is in the same
+            # position but the guard encounters it heading in different directions.
             loop_pos.append((obstacle_pos.x, obstacle_pos.y))
             return True
         elif guard.out_of_bounds:
@@ -158,15 +163,15 @@ def find_loops(test: Guard, control: Guard, loops: int = 0, loop_pos: list = [])
             guard.take_step(guard.get_next_position())
             return inner(guard)
 
-    loops = inner(test)
+    patrol = inner(test)
     # move control forward, reset test
     control.take_step(control.get_next_position())
     new_test = Guard(control.file_name, test.draw)
     
-    return find_loops(new_test, control, loops, loop_pos)
+    return find_loops(new_test, control, patrol, loop_pos)
 
 file_name = "input.txt"
-test = Guard(file_name, False)
+test = Guard(file_name)
 control = Guard(file_name)
 control.take_step(control.get_next_position())  # set the control to be one step ahead of the test guard
 
