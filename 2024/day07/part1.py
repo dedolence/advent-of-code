@@ -30,13 +30,13 @@
             [*, *, *]
 
 
-for test in operands:
+for test in operators:
     take each test and make two copies. add a + to one and a * to the other
     return with new lists
 
-operands = []
-operands = [[+], [*]]
-operands = [[+, +], [+, *], [*, +], [*, *]]
+operators = []
+operators = [[+], [*]]
+operators = [[+, +], [+, *], [*, +], [*, *]]
 ...
 """
 
@@ -57,15 +57,15 @@ def parse_input(file_name) -> list:
         return equations
 
 
-def build_operator_chains(eqs: int, ops: list = []):
+def build_operator_chains(l: int, ops: list = []):
     # this builds out a list of all possible combinations of + and * for a given length equation
     # if there are x number of operators, then the total amount of combinations will be 2^x
-    if len(ops) == 2 ** eqs:
+    if len(ops) == 2 ** l:
         return ops
     
     if len(ops) == 0:
         ops = [["+"], ["*"]]
-        return build_operator_chains(eqs, ops)
+        return build_operator_chains(l, ops)
     
     new_ops = []
     for op in ops:
@@ -74,10 +74,12 @@ def build_operator_chains(eqs: int, ops: list = []):
         new_ops.append(o1)
         new_ops.append(o2)
 
-    return build_operator_chains(eqs, new_ops)
+    return build_operator_chains(l, new_ops)
 
 
 def parse_chain(operands, chain, i = 0):
+    # necessary to do it this way, consuming one operand and operator at a time,
+    # because the totals do not follow PEMDAS rules but are only left-to-right.
     if len(operands) == 0:
         return i
     
@@ -94,7 +96,7 @@ def parse_chain(operands, chain, i = 0):
 def test_equation(eq):
     target = eq[0]
     operands = eq[1:]
-    operator_chains = build_operator_chains(len(eq) - 2)
+    operator_chains = build_operator_chains(len(operands) - 1)  # there will be 1 fewer operators than operands
     totals = [parse_chain(operands, chain) for chain in operator_chains]
     if target in totals: return target
     return False
