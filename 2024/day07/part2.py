@@ -77,38 +77,31 @@ def build_operator_chains(l: int, ops: list = []):
     return build_operator_chains(l, new_ops)
 
 
-def parse_chain(operands, chain, i = 0):
-    # smoosh the first items of operands and chain together and evaluate them.
-    # add that total to i and recurse until all the operands are consumed.
-    # necessary to do it this way, consuming one operand and operator at a time,
-    # because the totals do not follow PEMDAS rules but are only left-to-right.
-    if len(operands) == 0:
-        return i
+def parse_chain(operands, chain):
+    pass
+
+
+def mate_lists(operands, operators):
+    # operators will always be 1 shorter than operands
+    # add an extra operator that does nothing to the end
+    operators += ["+0"]
+
+    c = []
+    for i, o in enumerate(operands):
+        c += [operands[i]] + [operators[i]]
     
-    # start off the total with the leftmost operand
-    if i == 0:  
-        i = operands[0]
-        return parse_chain(operands[1:], chain, i)
-    
-    s = f"{i}{chain[0]}{operands[0]}"
-    i = eval(s)
-    return parse_chain(operands[1:], chain[1:], i)
-    
+    return c
 
 
 def test_equation(eq):
     target = eq[0]
     operands = eq[1:]
     operator_chains = build_operator_chains(len(operands) - 1)  # there will be 1 fewer operators than operands
-    totals = [parse_chain(operands, chain) for chain in operator_chains]
-    if target in totals: return target
-    return False
+    mated_lists = [mate_lists(operands, chain) for chain in operator_chains]
+    print(mated_lists)
+    
 
 
-equations = parse_input(file_name)
-total = 0
-
+equations = parse_input("test.txt")
 for eq in equations:
-    total += test_equation(eq)
-
-print(total)
+    test_equation(eq)
