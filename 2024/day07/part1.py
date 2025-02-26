@@ -61,6 +61,7 @@ def build_operator_chains(l: int, ops: list = []):
     # this builds out a list of all possible combinations of + and * for a given length equation
     # if there are x number of operators, then the total amount of combinations will be 2^x
     if len(ops) == 2 ** l:
+        print(ops)
         return ops
     
     if len(ops) == 0:
