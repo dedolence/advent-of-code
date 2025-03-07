@@ -1,5 +1,5 @@
 from collections import defaultdict
-from .. import loader
+from itertools import combinations
 
 file_name = "test.txt"
 
@@ -18,6 +18,16 @@ def find_antannas(rows):
     return points
 
 
-rows = loader.get_input()
+rows = get_input(file_name)
 antennas = find_antannas(rows)
-
+print(antennas)
+for symbol in antennas:
+    pairs = list(combinations(antennas[symbol], 2))
+    for pair in pairs:
+        # the pairs are processed by row, descending. so a will always be "higher" than b
+        # (8, 1), (5, 2)
+        a, b = pair
+        x1, x2 = a[0], b[0]
+        y1, y2 = a[1], b[1]
+        slope_x = abs(x2 - x1)  # = 5 - 8 = -3 = 3
+        slope_y = abs(y2 - y1)  # = 2 - 1 =  1 = 1
