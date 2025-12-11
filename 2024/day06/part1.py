@@ -1,3 +1,7 @@
+"""
+    i think i have a better way of doing this using while() instead of recursion in part 2.
+"""
+
 import os, sys
 from time import sleep
 sys.setrecursionlimit(10000)

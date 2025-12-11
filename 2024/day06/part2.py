@@ -32,6 +32,55 @@ sys.setrecursionlimit(10 ** 5)
 
 Pos = namedtuple("Position", ["x", "y", "d"])
 
+def find_starting_position(grid: list) -> tuple:
+    for y, row in enumerate(grid):
+        for x, col in enumerate(row):
+            if col == "^":
+                return (x, y, 0)
+
+        
+def get_grid(file_name: str) -> list:
+    with open(file_name) as file:
+        grid = ["*" + line.strip() + "*" for line in file.readlines()]
+        pad_row = "*" * len(grid[0])
+        grid = [pad_row] + grid + [pad_row]
+        return grid
+
+
+def get_path(grid):
+    directions = ((0, -1), (1, 0), (0, 1), (-1, 0))
+    visited = []
+    x, y, direction = starting_pos
+    next_tile = grid[y + directions[direction][1]][x + directions[direction][0]]
+
+    while next_tile != "*":
+        # check for loops
+        set_visited = set(visited)
+        if (x, y, direction) in set_visited:
+            return True
+        
+        visited.append((x, y, direction))
+
+        dx, dy = directions[direction][0], directions[direction][1]
+        next_tile = grid[y + dy][x + dx]
+        
+        if next_tile == "#":
+            # update the guard's trajectory
+            direction = (direction + 1) % len(directions)
+            dx, dy = directions[direction][0], directions[direction][1]
+
+        x += dx
+        y += dy
+    
+    return visited
+
+
+loop_counter = 0
+grid = get_grid("test.txt")
+starting_pos = find_starting_position(grid)
+visited = get_path(grid)
+
+print(len(set(visited)))
 
 class Guard:
     def __init__(self, file_name, draw: bool = False):

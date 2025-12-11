@@ -12,7 +12,7 @@ that list is exhaustive.
 from collections import defaultdict
 from typing import List
 
-with open("input.txt") as file:
+with open("test.txt") as file:
     inp = file.read().split("\n\n")
     rules = [line.strip() for line in inp[0].split("\n")]   # ['47|53', '97|13', ...]
     updates = [line.strip() for line in inp[1].split("\n")]   # ['75,47,61,53,29', '97,61,53,29,13', ...]
@@ -32,12 +32,17 @@ def check_update(update: List[int], rules: defaultdict) -> bool:
         leading = update[:i]
         for l in leading:
             if l not in rules[page]: return False
-    return True        
+    return True
 
 correct = []
+incorrect = []
+parsed_rules = parse_rules(rules)
 for update in updates:
-    update = [i for i in update.split(",")]
-    if check_update(update, parse_rules(rules)):
+    update = update.split(",")
+    if check_update(update, parsed_rules):
         correct.append(int(update[len(update)//2])) # // is floor division, i always forget this one
+    else:
+        incorrect.append(update)
 
+# part 1
 print(sum(correct))
